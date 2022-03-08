@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+  }
+  .wrapper form {
+    padding: 2.5rem 3rem;
+    background-color: rgba(0, 0, 0, 0.035);
+    border-radius: 20px;
+  }
+  

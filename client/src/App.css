@@ -1,0 +1,15 @@
+.selected {
+  background-color: #eff0f3;
+}
+.navbar-nav {
+  flex-direction: row !important;
+}
+.navbar-nav .dropdown-menu {
+  position: absolute !important;
+}
+.dropdown-list {
+  margin-left: -18rem;
+}
+.dropdown-item {
+  background-color: #eff0f3;
+}

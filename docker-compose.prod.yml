@@ -1,0 +1,75 @@
+version: "3.3"
+
+services:
+  api-prod:
+    container_name: rest-api-prod
+    restart: unless-stopped
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    ports:
+      - 5000:5000
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/demo-mvc
+      - NODE_ENV="development"
+      - JWT_TOKEN_SECRET="tokensecret"
+      - PAGE_SIZE=5
+    depends_on:
+      - mongo
+    networks:
+      - ngtinh
+
+  client-prod:
+    container_name: client-prod
+    restart: unless-stopped
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    ports:
+      - 3000:3000
+    depends_on:
+      - api-prod
+    networks:
+      - ngtinh
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - ngtinh
+
+  redis:
+    image: redis:6.2.6-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+    networks:
+      - ngtinh
+
+  nginx:
+    image: nginx:1.21.5-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx-prod.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api-prod
+      - client-prod
+    networks:
+      - ngtinh
+volumes:
+  mongodb:
+  redis:
+
+networks:
+  ngtinh:

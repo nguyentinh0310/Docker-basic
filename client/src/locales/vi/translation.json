@@ -1,0 +1,20 @@
+{
+    "Learn Docker":"Học Docker",
+    "Login Page":"Trang đăng nhập",
+    "Email is required":"Email bắt buộc",
+    "Password is required":"Mật khẩu bắt buộc",
+    "Sign in": "Đăng nhập",
+    "Password": "Mật khẩu",
+    "List user": "Danh sách người dùng",
+    "Add": "Thêm",
+    "Edit": "Sửa",
+    "Delete": "Xóa",
+    "Unchecked": "Bỏ chọn",
+    "Fullname": "Họ tên",
+    "Action": "Hành động",
+    "Degree": "Đồng ý",
+    "Cancel": "Hủy",
+    "Comfirm": "Xác nhận",
+    "Do you want to delete": "Bạn có muốn xóa",
+    "user": "người dùng"
+}

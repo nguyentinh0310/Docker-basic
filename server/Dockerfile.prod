@@ -1,0 +1,32 @@
+# Multi-Stage
+# Stage 1: build
+FROM node:16-alpine as build
+
+# WORKDIR = create and cd app
+WORKDIR /app
+
+# copy all
+COPY . .
+
+RUN npm i && npm run build
+
+# Stage 2: production
+# overwriting
+FROM node:16-alpine as prod
+
+WORKDIR /app
+
+# change permissions 
+RUN chown -R node:node /app
+
+USER node
+
+# copy from build to app
+COPY --chown=node:node --from=build /app/dist /app/dist
+
+COPY --chown=node:node --from=build /app/package*.json /app/
+
+# install only prod
+RUN npm install --only=prod
+
+CMD [ "npm", "start" ]

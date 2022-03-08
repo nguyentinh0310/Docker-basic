@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  api-dev:
+    container_name: rest-api-dev
+    restart: unless-stopped
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5000:5000
+    env_file:
+      - ./server/.env
+    # environment:
+    #   - MONGODB_URL=mongodb://mongo:27017/demo-mvc
+    volumes:
+      - ./server/src:/app/src
+    depends_on:
+      - mongo
+    networks:
+      - ngtinh
+  client-dev:
+    container_name: client-dev
+    restart: unless-stopped
+    build: 
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./client/src:/app/src
+    depends_on:
+      - api-dev
+    networks:
+      - ngtinh
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - ngtinh
+  
+  redis:
+    image: redis:6.2.6-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+    networks:
+      - ngtinh
+
+  nginx:
+    image: nginx:1.21.5-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx-dev.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api-dev
+      - client-dev
+    networks:
+      - ngtinh
+volumes:
+  mongodb:
+  redis:
+
+networks:
+  ngtinh:
